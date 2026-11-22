@@ -24,7 +24,7 @@
 
 ### 1. Клонирование репозитория
 ```bash
-git clone [https://github.com/Nekit557/meeting-planner-v1.git](https://github.com/Nekit557/meeting-planner-v1.git)
+git clone https://github.com/Nekit557/meeting-planner-v1
 cd meeting-planner-v1
 
 ```
