@@ -5,22 +5,20 @@ body {
 }
 
 @media (max-width:760px) {
-    header{
+    header {
         font-size: small;
         padding-left: 10px;
         padding-right: 10px;
         text-align: center;
     }
-
-    button {
-    }
+    
 
     main {
         padding-left: 10px;
         padding-right: 10px;
         height: max-content;
     }
-    
+
 
     .question_card button {
         font-size: medium;
@@ -28,19 +26,20 @@ body {
     }
 
     .question_author {
-        font-size:smaller;
+        font-size: smaller;
     }
 
-    .q_category, .q_discussed {
+    .q_category,
+    .q_discussed {
         font-size: small;
     }
 
-    
+
 }
 
 @media (max-width: 480px) {
     i {
         display: none;
     }
-    
+
 }

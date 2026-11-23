@@ -8,13 +8,13 @@ export default function QuestionsPage() {
     const [questions, setQuestions] = useState([])
     const [error, setError] = useState('')
     const rawUser = localStorage.getItem('user');
-    const currentUser = rawUser && rawUser !== 'undefined' ? JSON.parse(rawUser) : null;    
+    const currentUser = rawUser && rawUser !== 'undefined' ? JSON.parse(rawUser) : null;
     const [questionText, setQuestionText] = useState('')
     const [categories, setCategories] = useState([]);
     const [categoryId, setCategoryId] = useState('')
     if (!currentUser) {
-    return <Navigate to="/login" replace />;
-}
+        return <Navigate to="/login" replace />;
+    }
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -142,26 +142,26 @@ export default function QuestionsPage() {
     };
 
     const handleEditQuestion = async (id, newText) => {
-  try {
-    const response = await fetch(`/api/questions/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      },
-      body: JSON.stringify({ question_text: newText })
-    });
+        try {
+            const response = await fetch(`/api/questions/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({ question_text: newText })
+            });
 
-    if (!response.ok) {
-      setError('Не удалось отредактировать вопрос');
-      return;
-    }
+            if (!response.ok) {
+                setError('Не удалось отредактировать вопрос');
+                return;
+            }
 
-    fetchQuestions();
-  } catch {
-    setError('Ошибка соединения с сервером');
-  }
-};
+            fetchQuestions();
+        } catch {
+            setError('Ошибка соединения с сервером');
+        }
+    };
 
     return <>
         <header className="w-screen flex justify-center bg-white">
