@@ -8,8 +8,7 @@ export default function QuestionsPage() {
     const [questions, setQuestions] = useState([])
     const [error, setError] = useState('')
     const rawUser = localStorage.getItem('user');
-    const currentUser = rawUser && rawUser !== 'undefined' ? JSON.parse(rawUser) : null;
-    
+    const currentUser = rawUser && rawUser !== 'undefined' ? JSON.parse(rawUser) : null;    
     const [questionText, setQuestionText] = useState('')
     const [categories, setCategories] = useState([]);
     const [categoryId, setCategoryId] = useState('')
@@ -142,6 +141,28 @@ export default function QuestionsPage() {
         }
     };
 
+    const handleEditQuestion = async (id, newText) => {
+  try {
+    const response = await fetch(`/api/questions/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify({ question_text: newText })
+    });
+
+    if (!response.ok) {
+      setError('Не удалось отредактировать вопрос');
+      return;
+    }
+
+    fetchQuestions();
+  } catch {
+    setError('Ошибка соединения с сервером');
+  }
+};
+
     return <>
         <header className="w-screen flex justify-center">
             <div className="header_menu bg-white w-full max-w-5xl h-17  flex justify-between items-center">
@@ -180,6 +201,12 @@ export default function QuestionsPage() {
                     className="rounded-xl bg-blue-600 text-white w-40 py-2"
                 >Добавить вопрос</button>
             </form>
+
+            <div className="max-w-3xl w-full">
+                <p className="py-5 text-lg">Вопросов: {questions.length}</p>
+
+            </div>
+
             <section className="w-full max-w-3xl mt-5 flex gap-5 flex-col ">
                 {questions.map((q) => (
                     <QuestionCard
@@ -188,6 +215,7 @@ export default function QuestionsPage() {
                         currentUser={currentUser}
                         onToggle={handleToggleQuestion}
                         onDelete={handleDeleteQuestion}
+                        onClick={handleEditQuestion}
                     />
                 ))}
             </section>

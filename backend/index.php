@@ -94,7 +94,41 @@ if ($method == 'GET' && $path === '/api/categories') {
         exit;
 
     }
+
+    $isAdmin = ($currentUser['role'] === 'admin');
+    $isAuthor = ((int)$question['user_id'] === (int)$currentUser['id']);
+    $isDiscussed = (bool)$question['is_discussed'];
+
     $data = json_decode(file_get_contents('php://input'), true);
+
+
+    if (isset($data['question_text'])){
+        if($isDiscussed){
+            http_response_code(403);
+            echo json_encode(['error' => 'Нельзя редактировать обсужденный вопрос'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+        
+        if(!$isAdmin && !$isAuthor){
+            http_response_code(403);
+            echo json_encode(['error'=> 'Можно редактировать только свои вопросы'], JSON_UNESCAPED_UNICODE);
+        }
+
+        $newText = trim($data['question_text']);
+        if ($newText === '') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Текст вопроса не может быть пустым'], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $stmt = $pdo->prepare('UPDATE questions SET question_text = :question_text WHERE id = :id RETURNING *');
+        $stmt->execute([
+            ':question_text' => $newText,
+            ':id' => $questionId
+        ]);
+        echo json_encode($stmt->fetch(), JSON_UNESCAPED_UNICODE);
+        exit;
+    }
     
     if(!isset($data['is_discussed']) || !is_bool($data['is_discussed'])){
         http_response_code(400);
@@ -107,6 +141,7 @@ if ($method == 'GET' && $path === '/api/categories') {
     $stmt->execute([
         ':is_discussed' => $data['is_discussed'] ? true : false,
         ':id' => $questionId
+        
     ]);
     $updatedQuestion = $stmt->fetch();
 
