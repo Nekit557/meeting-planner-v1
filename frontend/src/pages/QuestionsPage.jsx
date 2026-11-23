@@ -164,17 +164,17 @@ export default function QuestionsPage() {
 };
 
     return <>
-        <header className="w-screen flex justify-center">
+        <header className="w-screen flex justify-center bg-white">
             <div className="header_menu bg-white w-full max-w-5xl h-17  flex justify-between items-center">
-                <p className="text-xl">Вопросы для обсуждения</p>
+                <p className="text-xl header_title">Вопросы для обсуждения</p>
                 <div className="left_menu flex gap-5 items-center">
                     <p className="text-black">Пользователь: {currentUser?.name}</p>
                     <button onClick={handleLogout} className="border-1 px-7 py-1 text-lg rounded-lg">Выйти</button>
                 </div>
             </div>
         </header>
-        <main className="bg-gray-100 h-screen max-h-full w-screen  flex items-center flex-col ">
-            <form onSubmit={handleAddQuestion} className="mt-5 w-full max-w-3xl  bg-white flex flex-col rounded-xl py-7 justify-center px-10 gap-5">
+        <main className="bg-gray-100 h-screen  w-screen  flex items-center flex-col ">
+            <form onSubmit={handleAddQuestion} className=" form mt-5 w-full max-w-3xl  bg-white flex flex-col rounded-xl py-7 justify-center px-10 gap-5">
                 <p>Отправить вопрос</p>
                 <input type="text"
                     placeholder="Введите ваш вопрос"
